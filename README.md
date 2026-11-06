@@ -2,6 +2,10 @@
 
 Sistema de estoque para cadastrar produtos de informática, lançar entradas e saídas e acompanhar o saldo em um dashboard. A interface e o servidor ficam no mesmo projeto Next.js. O Postgres roda à parte e é configurado pela `DATABASE_URL`.
 
+## Status
+
+O projeto está em desenvolvimento ativo. Estamos trabalhando em novas funcionalidades, correções de bugs e melhorias.
+
 ## Telas
 
 | Rota | Função |
