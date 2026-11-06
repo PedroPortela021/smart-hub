@@ -1,5 +1,10 @@
 import "dotenv/config"
-import { defineConfig, env } from "prisma/config"
+import { defineConfig } from "prisma/config"
+
+// `prisma generate` não conecta no banco. No build da imagem a DATABASE_URL
+// pode não existir; o placeholder só satisfaz a config do CLI.
+const databaseUrl =
+  process.env.DATABASE_URL || "postgresql://localhost:5432/estoque"
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -8,6 +13,6 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    url: env("DATABASE_URL"),
+    url: databaseUrl,
   },
 })
