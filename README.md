@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# smart-hub
 
-## Getting Started
+Sistema básico de gerenciamento de estoque. O Next.js entrega a interface e as server actions. O Postgres fica fora da aplicação, configurado por `DATABASE_URL`.
 
-First, run the development server:
+## Requisitos
+
+- Node.js 20+
+- Docker
+
+## Como rodar
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Gere um `AUTH_SECRET` longo e aleatório no `.env`. O banco de desenvolvimento sobe com:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+docker compose up -d
+npx prisma migrate dev
+npx prisma db seed
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+O Postgres fica em `localhost:5432`, banco `estoque`, usuário e senha `estoque`. Os dados persistem no volume `estoque_pg`.
 
-## Learn More
+Abra `http://localhost:3000`.
 
-To learn more about Next.js, take a look at the following resources:
+## Usuário inicial
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+O seed cria um usuário administrador:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- E-mail: `admin@estoque.local`
+- Senha: `admin123`
 
-## Deploy on Vercel
+## Regras
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- A quantidade do produto muda apenas por movimentação.
+- Cadastro com quantidade inicial maior que zero gera uma entrada.
+- Produto com movimentação não pode ser excluído.
+- Saída acima do saldo é recusada.
